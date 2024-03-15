@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD024 -->
 
-# My ME5413 Final Project
+# My ME5413 Planning Project
 
 This is my forked version of the [ME5413_PLANNING_Project](https://github.com/ruziniuuuuu/ME5413_Planning_Project_Group20.git).
 
