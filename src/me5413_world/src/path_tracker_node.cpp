@@ -22,7 +22,7 @@ void dynamicParamCallback(me5413_world::path_trackerConfig& config, uint32_t lev
 {
   // Common Params
   SPEED_TARGET = config.speed_target;
-  // PID 
+  // PID
   PID_Kp = config.PID_Kp;
   PID_Ki = config.PID_Ki;
   PID_Kd = config.PID_Kd;
@@ -50,7 +50,7 @@ PathTrackerNode::PathTrackerNode() : tf2_listener_(tf2_buffer_)
 
 void PathTrackerNode::localPathCallback(const nav_msgs::Path::ConstPtr& path)
 {
-  // Calculate absolute errors (wrt to world frame)
+  // Calculate absolute errors (wrt. world frame)
   this->pose_world_goal_ = path->poses[11].pose;
   this->pub_cmd_vel_.publish(computeControlOutputs(this->odom_world_robot_, this->pose_world_goal_));
 
@@ -113,6 +113,34 @@ geometry_msgs::Twist PathTrackerNode::computeControlOutputs(const nav_msgs::Odom
 
   // std::cout << "robot velocity is " << velocity << " throttle is " << cmd_vel.linear.x << std::endl;
   // std::cout << "lateral error is " << lat_error << " heading_error is " << heading_error << " steering is " << cmd_vel.angular.z << std::endl;
+
+  return cmd_vel;
+}
+
+geometry_msgs::Twist PathTrackerNode::computeControlOutputs_lqr(const nav_msgs::Odometry& odom_robot, const geometry_msgs::Pose& pose_goal)
+{
+  geometry_msgs::Twist cmd_vel;
+  if (PARAMS_UPDATED)
+  {
+    this->pid_.updateSettings(PID_Kp, PID_Ki, PID_Kd);
+    PARAMS_UPDATED = false;
+  }
+  cmd_vel.linear.x = 1;
+  cmd_vel.angular.z = 1;
+
+  return cmd_vel;
+}
+
+geometry_msgs::Twist PathTrackerNode::computeControlOutputs_mpc(const nav_msgs::Odometry& odom_robot, const geometry_msgs::Pose& pose_goal)
+{
+  geometry_msgs::Twist cmd_vel;
+  if (PARAMS_UPDATED)
+  {
+    this->pid_.updateSettings(PID_Kp, PID_Ki, PID_Kd);
+    PARAMS_UPDATED = false;
+  }
+  cmd_vel.linear.x = 1;
+  cmd_vel.angular.z = 1;
 
   return cmd_vel;
 }
