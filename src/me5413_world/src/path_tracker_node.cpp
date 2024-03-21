@@ -66,7 +66,7 @@ void PathTrackerNode::robotOdomCallback(const nav_msgs::Odometry::ConstPtr& odom
   return;
 };
 
-double PathTrackerNode::computeStanelyControl(const double heading_error, const double cross_track_error, const double velocity)
+double PathTrackerNode::computeStanleyControl(const double heading_error, const double cross_track_error, const double velocity)
 {
   const double stanley_output = -1.0*(heading_error + std::atan2(STANLEY_K*cross_track_error, std::max(velocity, 0.3)));
 
@@ -109,7 +109,7 @@ geometry_msgs::Twist PathTrackerNode::computeControlOutputs(const nav_msgs::Odom
     PARAMS_UPDATED = false;
   }
   cmd_vel.linear.x = this->pid_.calculate(SPEED_TARGET, velocity);
-  cmd_vel.angular.z = computeStanelyControl(heading_error, lat_error, velocity);
+  cmd_vel.angular.z = computeStanleyControl(heading_error, lat_error, velocity);
 
   // std::cout << "robot velocity is " << velocity << " throttle is " << cmd_vel.linear.x << std::endl;
   // std::cout << "lateral error is " << lat_error << " heading_error is " << heading_error << " steering is " << cmd_vel.angular.z << std::endl;
