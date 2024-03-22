@@ -25,6 +25,8 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
 )
 
+find_package(Eigen3 REQUIRED)
+
 generate_dynamic_reconfigure_options(
   cfg/path_publisher.cfg
   cfg/path_tracker.cfg
@@ -41,6 +43,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${dynamic_reconfigure_PACKAGE_PATH}/cmake/cfgbuild.cmake
+  ${EIGEN3_INCLUDE_DIRS}
 )
 
 # Add Nodes
