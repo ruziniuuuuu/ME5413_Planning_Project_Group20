@@ -35,6 +35,10 @@
 #include <dynamic_reconfigure/server.h>
 #include <me5413_world/path_trackerConfig.h>
 
+#include <Eigen/Dense>
+#include <Eigen/Core>
+#include <Eigen/LU>
+
 #include "me5413_world/pid.hpp"
 
 namespace me5413_world 
@@ -53,9 +57,10 @@ class PathTrackerNode
 
   tf2::Transform convertPoseToTransform(const geometry_msgs::Pose& pose);
   double computeStanleyControl(const double heading_error, const double cross_track_error, const double velocity);
+  double computePurePursuitControl(const double heading_error, const double cross_track_error, const double velocity);
+  double computeLQRControl(const double heading_error, const double cross_track_error, const double velocity);
+  double computeMPCControl(const double heading_error, const double cross_track_error, const double velocity);
   geometry_msgs::Twist computeControlOutputs(const nav_msgs::Odometry& odom_robot, const geometry_msgs::Pose& pose_goal);
-  geometry_msgs::Twist computeControlOutputs_lqr(const nav_msgs::Odometry& odom_robot, const geometry_msgs::Pose& pose_goal);
-  geometry_msgs::Twist computeControlOutputs_mpc(const nav_msgs::Odometry& odom_robot, const geometry_msgs::Pose& pose_goal);
 
   // ROS declaration
   ros::NodeHandle nh_;
