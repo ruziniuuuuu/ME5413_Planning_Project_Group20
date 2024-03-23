@@ -10,7 +10,7 @@ namespace me5413_world
     double PID_Kp, PID_Ki, PID_Kd;
     double purePursuit_DistanceAhead; // Pure pursuit look ahead distance
     bool PARAMS_UPDATED;
-    double yaw_angular_error = 3;
+    double yaw_angular_error = 5;
 
     void dynamicParamCallback(const me5413_world::path_tracker_pid_purePursuitConfig& config,uint32_t level)
     {

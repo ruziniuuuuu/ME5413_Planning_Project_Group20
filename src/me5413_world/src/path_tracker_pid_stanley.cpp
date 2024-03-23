@@ -14,7 +14,7 @@ namespace me5413_world {
     const double PathTrackerNode::TURNING_SPEED = 0.2;
     const double PathTrackerNode::STANLEY_GAIN_TURNING = 0.5;
     const double PathTrackerNode::HEADING_ERROR_THRESHOLD = 0.05;
-    const double PathTrackerNode::CROSS_TRACK_ERROR_THRESHOLD = 0.5;
+    const double PathTrackerNode::CROSS_TRACK_ERROR_THRESHOLD = 0.3;
 
     void dynamicParamCallback(me5413_world::path_tracker_pid_stanleyConfig& config, uint32_t level)
     {
@@ -139,7 +139,6 @@ namespace me5413_world {
         adjustStanleyKBasedOnVelocity(velocity);
 
         // Implement logic for initial acceleration phase and conditional adjustment of speed and steering gain based on heading and lateral errors.
-        static ros::Time start_time = ros::Time::now();
         static ros::Time start_time = ros::Time::now();
         ros::Duration time_elapsed = ros::Time::now() - start_time;
         const double acceleration_phase_duration = 5.0;
