@@ -25,11 +25,10 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
 )
 
-find_package(Eigen3 REQUIRED)
-
 generate_dynamic_reconfigure_options(
   cfg/path_publisher.cfg
   cfg/path_tracker.cfg
+  cfg/path_tracker_pid_purePursuit.cfg
 )
 
 catkin_package(
@@ -43,7 +42,6 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${dynamic_reconfigure_PACKAGE_PATH}/cmake/cfgbuild.cmake
-  ${EIGEN3_INCLUDE_DIRS}
 )
 
 # Add Nodes
@@ -54,3 +52,7 @@ add_dependencies(path_publisher_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME
 add_executable(path_tracker_node src/path_tracker_node.cpp)
 target_link_libraries(path_tracker_node ${catkin_LIBRARIES})
 add_dependencies(path_tracker_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+
+add_executable(path_tracker_pid_purePursuit_node src/path_tracker_pid_purePursuit_node.cpp)
+target_link_libraries(path_tracker_pid_purePursuit_node ${catkin_LIBRARIES})
+add_dependencies(path_tracker_pid_purePursuit_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
