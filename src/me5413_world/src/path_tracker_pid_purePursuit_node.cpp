@@ -75,6 +75,7 @@ namespace me5413_world
 
     geometry_msgs::PoseStamped PathTrackerPIDPurePursuit::purePursuitGoalPose(const tf2::Vector3& point_robot, const nav_msgs::Path::ConstPtr& path, double purePursuit_DistanceAhead)
     {
+        // Binary search to find the closest path point to the robot
         int low = 0, high = path->poses.size() - 1, mid;
         double min_distance = std::numeric_limits<double>::max();
         int closest_idx = 0;
@@ -95,6 +96,8 @@ namespace me5413_world
             }
         }
 
+
+        // Find the goal pose on the path that is ahead of the robot by a specified distance
         int goal_idx = closest_idx;
         tf2::Vector3 point_path;
         tf2::fromMsg(path->poses[goal_idx].pose.position, point_path);

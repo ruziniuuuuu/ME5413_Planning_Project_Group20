@@ -29,6 +29,7 @@ generate_dynamic_reconfigure_options(
   cfg/path_publisher.cfg
   cfg/path_tracker.cfg
   cfg/path_tracker_pid_purePursuit.cfg
+  cfg/path_tracker_pid_stanley.cfg
 )
 
 catkin_package(
@@ -56,3 +57,8 @@ add_dependencies(path_tracker_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_
 add_executable(path_tracker_pid_purePursuit_node src/path_tracker_pid_purePursuit_node.cpp)
 target_link_libraries(path_tracker_pid_purePursuit_node ${catkin_LIBRARIES})
 add_dependencies(path_tracker_pid_purePursuit_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+
+add_executable(path_tracker_pid_stanley_node src/path_tracker_pid_stanley.cpp)
+target_link_libraries(path_tracker_pid_stanley_node ${catkin_LIBRARIES})
+add_dependencies(path_tracker_pid_stanley_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+
