@@ -44,7 +44,8 @@ if __name__ == '__main__':
     package_path = rospack.get_path('me5413_world')
     data_path = os.path.join(package_path, 'result')
     absolute_data_path = os.path.abspath(data_path)
-    bag_file_path = os.path.join(absolute_data_path, 'errors_pid_Stanley.csv')
+    bag_file_path = os.path.join(absolute_data_path, 'errors.csv')
+    # bag_file_path = os.path.join(absolute_data_path, 'errors_pid_Stanley.csv')
     # bag_file_path = os.path.join(absolute_data_path, 'errors_pid_purePursuit.csv')
 
     try:

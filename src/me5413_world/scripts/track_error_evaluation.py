@@ -49,7 +49,8 @@ def evaluate_track_errors(errors_file):
 
 
 if __name__ == '__main__':
-    errors_file = '../result/pid_stanley/errors_pid_Stanley.csv'
-    # errors_file = '../result/errors_pid_purePursuit.csv'
+    errors_file = '../result/errors.csv'
+    # errors_file = '../result/pid_stanley/errors_pid_Stanley.csv'
+    # errors_file = '../result/pid_purePursuit/errors_pid_purePursuit.csv'
 
     evaluate_track_errors(errors_file)
