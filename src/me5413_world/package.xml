@@ -52,7 +52,6 @@
 
   <depend>rospy</depend>
   <depend>roscpp</depend>
-  <depend>rospkg</depend>
   <depend>rviz</depend>
   <depend>std_msgs</depend>
   <depend>nav_msgs</depend>

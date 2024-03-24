@@ -12,7 +12,7 @@ namespace me5413_world {
 
 
     const double PathTrackerNode::TURNING_SPEED = 0.2;
-    const double PathTrackerNode::STANLEY_GAIN_TURNING = 0.5;
+    const double PathTrackerNode::STANLEY_GAIN_TURNING = 0.6;
     const double PathTrackerNode::HEADING_ERROR_THRESHOLD = 0.05;
     const double PathTrackerNode::CROSS_TRACK_ERROR_THRESHOLD = 0.3;
 
