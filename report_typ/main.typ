@@ -12,21 +12,21 @@
       department: [Mechanical Engineering],
       organization: [National University of Singapore],
       location: [Singapore, Singapore],
-      email: "e1192847@u.nus.edu"
+      email: "A0285295N"
     ),
     (
       name: "Li Zhangjin",
       department: [Mechanical Engineering],
       organization: [National University of Singapore],
       location: [Singapore, Singapore],
-      email: "e1192649@u.nus.edu"
+      email: "A0285091B"
     ),
     (
       name: "Zhao Xu",
       department: [Mechanical Engineering],
       organization: [National University of Singapore],
       location: [Singapore, Singapore],
-      email: "e1192836@u.nus.edu"
+      email: "A0285284U"
     ),
   ),
   index-terms: ("Path planning", "A* algorithm", "Traveling Salesman Problem", "Path tracking control"),
