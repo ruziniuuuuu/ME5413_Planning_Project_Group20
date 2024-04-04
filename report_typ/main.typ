@@ -2,7 +2,7 @@
 #import "@preview/tablex:0.0.8": tablex, rowspanx, colspanx
 
 #show: ieee.with(
-  title: [ME5413 Homework 3: Planning ],
+  title: [ME5413 Homework 3 Planning Group 20],
   abstract: [
     This report presents our group's work on implementing planning algorithms for autonomous mobile robots. We applied the A\* algorithm and its variants for global path planning on a map of VivoCity Level 2. The Traveling Shopper Problem of finding the optimal route to visit multiple locations was modeled and solved using two approaches. As a bonus, a path tracking controller was developed to follow a figure-8 reference trajectory. The methodology, results, and insights gained from each task are discussed.
   ],
