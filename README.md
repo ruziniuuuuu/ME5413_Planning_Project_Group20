@@ -1,10 +1,10 @@
 <!-- markdownlint-disable MD024 -->
 
-# My ME5413 Planning Project
+# ME5413 Planning Project Group20
 
 > Authors: [Cao Chenyu](https://github.com/ruziniuuuuu), [Zhao Xu](https://github.com/AeroEmbedAutoTechJohn), [Li Zhangjin](https://github.com/Lizhangjin)
 
-This is my forked version of the [ME5413_PLANNING_Project](https://github.com/ruziniuuuuu/ME5413_Planning_Project_Group20.git).
+This is our forked version (Group 20) of the [ME5413_PLANNING_Project](https://github.com/ruziniuuuuu/ME5413_Planning_Project_Group20.git).
 
 ## Introduction
 
@@ -96,6 +96,7 @@ ME5413_Planning_Project_Group20
 - [x] Implement the A* algorithm
 - [x] Degenrate the A* algorithm to Dijkstra's algorithm
 - [x] Degenrate the A* algorithm to Greedy Best First Search
+- [x] Try all the start and goal positions
 - [x] Compare the performance of the three algorithms in terms of path length, nodes visited, and computation time
 - [x] Implement the A* algorithm with a different heuristic (Manhattan distance)
 
