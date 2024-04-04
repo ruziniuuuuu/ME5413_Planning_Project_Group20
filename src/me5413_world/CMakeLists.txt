@@ -27,9 +27,9 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_dynamic_reconfigure_options(
   cfg/path_publisher.cfg
-  cfg/path_tracker.cfg
-  cfg/path_tracker_pid_purePursuit.cfg
-  cfg/path_tracker_pid_stanley.cfg
+  cfg/path_tracker_pid_stanley_original.cfg
+  cfg/path_tracker_pid_stanley_improved.cfg
+  cfg/path_tracker_pid_purepursuit.cfg
 )
 
 catkin_package(
@@ -50,15 +50,20 @@ add_executable(path_publisher_node src/path_publisher_node.cpp)
 target_link_libraries(path_publisher_node ${catkin_LIBRARIES})
 add_dependencies(path_publisher_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 
-add_executable(path_tracker_node src/path_tracker_node.cpp)
-target_link_libraries(path_tracker_node ${catkin_LIBRARIES})
-add_dependencies(path_tracker_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+add_executable(path_tracker_pid_stanley_original_node src/path_tracker_pid_stanley_original_node.cpp)
+target_link_libraries(path_tracker_pid_stanley_original_node ${catkin_LIBRARIES})
+add_dependencies(path_tracker_pid_stanley_original_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 
-add_executable(path_tracker_pid_purePursuit_node src/path_tracker_pid_purePursuit_node.cpp)
-target_link_libraries(path_tracker_pid_purePursuit_node ${catkin_LIBRARIES})
-add_dependencies(path_tracker_pid_purePursuit_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+add_executable(path_tracker_pid_stanley_improved_node src/path_tracker_pid_stanley_improved_node.cpp)
+target_link_libraries(path_tracker_pid_stanley_improved_node ${catkin_LIBRARIES})
+add_dependencies(path_tracker_pid_stanley_improved_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 
-add_executable(path_tracker_pid_stanley_node src/path_tracker_pid_stanley.cpp)
-target_link_libraries(path_tracker_pid_stanley_node ${catkin_LIBRARIES})
-add_dependencies(path_tracker_pid_stanley_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
+add_executable(path_tracker_pid_purepursuit_node src/path_tracker_pid_purepursuit_node.cpp)
+target_link_libraries(path_tracker_pid_purepursuit_node ${catkin_LIBRARIES})
+add_dependencies(path_tracker_pid_purepursuit_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_gencfg)
 
+# Add Python Scripts
+catkin_install_python(PROGRAMS 
+  scripts/track_error_logger.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

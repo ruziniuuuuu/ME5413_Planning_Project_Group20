@@ -1,0 +1,27 @@
+<launch>
+  <arg name="log_error" default="true" />
+  <arg name="csv_file_path" default="$(find me5413_world)/../../outputs/pid_stanley_improved/errors_pid_stanley_improved.csv" />
+  <arg name="record_rosbag" default="false" />
+  <arg name="bag_file_path" default="$(find me5413_world)/../../outputs/pid_stanley_improved/traj.bag" />
+
+  <!-- Launch the ME5413 Path Publisher Node -->
+  <node ns="me5413_world" pkg="me5413_world" type="path_publisher_node" name="path_publisher_node" output="screen" />
+
+  <!-- Launch the ME5413 Path Publisher Node -->
+  <node ns="me5413_world" pkg="me5413_world" type="path_tracker_pid_stanley_improved_node" name="path_tracker_pid_stanley_improved_node" output="screen" />
+
+  <!-- Launch Rviz with our settings -->
+  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find me5413_world)/rviz/navigation.rviz" output="log" respawn="false"/>
+
+  <!-- Conditionally launch the Track Error Logger Node -->
+  <group if="$(arg log_error)">
+    <node pkg="me5413_world" type="track_error_logger.py" name="track_error_logger" output="screen">
+      <param name="csv_file_path" value="$(arg csv_file_path)" />
+    </node>
+  </group>
+
+  <!-- Conditionally launch the rosbag record node based on the 'record_rosbag' argument -->
+  <group if="$(arg record_rosbag)">
+    <node pkg="rosbag" type="record" name="rosbag_record" args="-O $(arg bag_file_path) /odometry/filtered /gazebo/ground_truth/state" output="screen" />
+  </group>
+</launch>

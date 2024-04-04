@@ -1,6 +1,6 @@
 
 #include "me5413_world/math_utils.hpp"
-#include "me5413_world/path_tracker_pid_purePursuit_node.hpp"
+#include "me5413_world/path_tracker_pid_purepursuit_node.hpp"
 
 namespace me5413_world
 {

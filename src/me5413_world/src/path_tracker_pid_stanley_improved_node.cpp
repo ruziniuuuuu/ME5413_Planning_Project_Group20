@@ -1,4 +1,4 @@
-#include "me5413_world/path_tracker_pid_stanley_node.hpp"
+#include "me5413_world/path_tracker_pid_stanley_improved_node.hpp"
 
 namespace me5413_world {
 
@@ -9,7 +9,6 @@ namespace me5413_world {
     double prev_STANLEY_K = 1.0;
     double prev_velocity = 0.0;
     bool PARAMS_UPDATED;
-
 
     const double PathTrackerNode::TURNING_SPEED = 0.2;
     const double PathTrackerNode::STANLEY_GAIN_TURNING = 0.6;
@@ -64,8 +63,6 @@ namespace me5413_world {
 
     double PathTrackerNode::computeStanleyControl(const double heading_error, const double cross_track_error, const double velocity,double stanley_gain)
     {
-//        double stanley_output = -1.0 * (heading_error + std::atan2(STANLEY_K * cross_track_error, std::max(velocity, 0.3)));
-
         // Compute the Stanley control output based on heading error, cross-track error, and velocity
         // The control output is calculated as a negative feedback of heading error and the arctangent of cross-track error times gain over velocity.
         double stanley_output = -1.0 * (heading_error + std::atan2(stanley_gain * cross_track_error, std::max(velocity, 0.3)));
@@ -104,7 +101,6 @@ namespace me5413_world {
         prev_STANLEY_K = STANLEY_K;
         prev_velocity = velocity;
     }
-
 
     geometry_msgs::Twist PathTrackerNode::computeControlOutputs(const nav_msgs::Odometry& odom_robot, const geometry_msgs::Pose& pose_goal)
     {
@@ -176,8 +172,8 @@ namespace me5413_world {
         prev_linear_x = cmd_vel.linear.x;
         prev_angular_z = cmd_vel.angular.z;
 
-         std::cout << "robot velocity is " << velocity << " throttle is " << cmd_vel.linear.x << std::endl;
-         std::cout << "lateral error is " << lat_error << " heading_error is " << heading_error << " steering is " << cmd_vel.angular.z << std::endl;
+        std::cout << "robot velocity is " << velocity << " throttle is " << cmd_vel.linear.x << std::endl;
+        std::cout << "lateral error is " << lat_error << " heading_error is " << heading_error << " steering is " << cmd_vel.angular.z << std::endl;
 
         return cmd_vel;
     }
