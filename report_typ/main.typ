@@ -35,13 +35,13 @@
 
 = Introduction
 
-Planning algorithms are a fundamental component of autonomous mobile robots, enabling them to find efficient paths in complex environments and optimize routes for multi-goal missions. In this homework, we implemented and analyzed several key planning techniques, including the A\*, Dijkstra, and Greedy BFS algorithms for global path planning, solutions to the Traveling Salesman Problem (TSP) for multi-goal path optimization, and path tracking controllers for precise trajectory following.
+Planning algorithms are a fundamental component of autonomous mobile robots, enabling them to find efficient paths in complex environments and optimize routes for multi-goal missions.@lavalle2006planning In this homework, we implemented and analyzed several key planning techniques, including the A\*, Dijkstra, and Greedy BFS algorithms for global path planning, solutions to the Traveling Salesman Problem (TSP) for multi-goal path optimization, and path tracking controllers for precise trajectory following.
 
 = Task 1: Graph Search Algorithms
 
 == Problem Formulation
 
-The first task involved implementing the A\* algorithm and its variants (Dijkstra, and Greedy BFS) to find the shortest path between different locations on a map of VivoCity Level 2. The goal was to compute the distances, cells visited, and computation time for each algorithm, comparing their performance and optimality.
+The first task involved implementing the A\* algorithm @hart1968formal and its variants (Dijkstra @dijkstra1959note, and Greedy BFS @dechter1985generalized) to find the shortest path between different locations on a map of VivoCity Level 2. The goal was to compute the distances, cells visited, and computation time for each algorithm, comparing their performance and optimality.
 
 == Methodology
 
@@ -163,8 +163,8 @@ From the results, we can observe the following key points:
     [*Algorithm*],
     [*Goal \ Position*],
     [*Path \ Length (m)*],
-    [*Nodes Visited*],
     [*Computation Time (s)*],
+    [*Nodes Visited*],
 
     [A\* ], rowspanx(3)[snacks], [*141.97*], [7.19], [39161],
     [Dijkstra], (), [*141.97*], [3.50], [76048],
@@ -203,7 +203,15 @@ The Genetic Algorithm is a metaheuristic approach inspired by the process of nat
 
 == Results and Discussion
 
-@tab:tsp_comparison compares the execution time and total distance obtained by each TSP algorithm. The Brute Force algorithm finds the optimal solution but has the highest execution time due to its exponential time complexity. The Dynamic Programming algorithm also finds the optimal solution with a lower execution time compared to Brute Force. The Genetic Algorithm provides a near-optimal solution (in this case still optimal) with the lowest execution time among the three algorithms.
+@tab:tsp_comparison compares the execution time and total distance obtained by each TSP algorithm. The results show that all three algorithms found the optimal path with a total distance of 628.17m. However, there are notable differences in their execution times.
+
+The Dynamic Programming (DP) algorithm was the fastest, with an execution time of $1.11 times 10^(-4)$ clock cycles. This efficiency can be attributed to the relatively small number of nodes in the TSP problem, which allows the DP algorithm to solve it effectively.
+
+The Brute Force (BF) algorithm had the second-fastest execution time of $9.77 times 10^(-4)$ clock cycles. Although it guarantees finding the optimal solution by exhaustively exploring all possible paths, its execution time is slightly longer than the DP algorithm due to its exponential time complexity.
+
+The Genetic Algorithm (GA) had the longest execution time of $6.77 times 10^(-2)$ clock cycles. This is because the GA requires more time to converge towards the optimal solution through an iterative process of selection, crossover, and mutation. Despite its longer execution time, the GA still managed to find the optimal path in this specific TSP problem.
+
+These results demonstrate the trade-offs between execution time and solution quality among the three algorithms. While the DP algorithm excels in solving small-scale TSP problems efficiently, the BF algorithm provides a reliable approach for finding the optimal solution, albeit with a slightly longer execution time. The GA, on the other hand, offers a balance between exploration and exploitation, making it suitable for larger and more complex TSP instances where finding the exact optimal solution may be computationally expensive.
 
 #figure(
   caption: [Comparison of TSP Algorithms],
@@ -213,12 +221,12 @@ The Genetic Algorithm is a metaheuristic approach inspired by the process of nat
     align: center + horizon,
     auto-vlines: true,
     [*Algorithm*],
-    [*Execution Time (s)*],
+    [*Execution Time \ (clock cycles)*],
     [*Total Distance (m)*],
 
-    [*BF*], [*0.02*], rowspanx(3)[*628.17*],
-    [*DP*], [*0.01*], (),
-    [*GA*], [*0.03*], ()
+    [*BF*], [$9.77 times 10^(-4)$], rowspanx(3)[628.17],
+    [*DP*], [$bold(1.11 times 10^(-4))$], (),
+    [*GA*], [$6.77 times 10^(-2)$], ()
   )
 )<tab:tsp_comparison>
 
@@ -237,48 +245,74 @@ The Genetic Algorithm is a metaheuristic approach inspired by the process of nat
 == Introduction
 The goal of this task was to control the robot to follow a given figure-8 track. We were provided with a template code that included a PID controller for throttle and a Stanley controller for steering. However, both controllers were not properly configured or tuned. In this report, we present our approach to improving the path tracking performance.
 
+// Github Repository:
+#show link: underline
+#block(
+  fill: luma(230),
+  inset: 8pt,
+  radius: 4pt,
+  [*Github Repo*: #link("https://github.com/ruziniuuuuu/ME5413_Planning_Project_Group20.git")[ME5413_Planning_Project_Group20]] 
+)
+
 == Methodology
-=== Dynamic Parameter Tuning
-We started by dynamically tuning the parameters of the original PID Stanley controller to improve tracking performance. We adjusted the gains and the lookahead distance to achieve better tracking results. The dynamic reconfigure GUI provided in the template code allowed us to tune these parameters in real-time.
+=== Orginal: PID Stanley Controller
+We started by dynamically tuning the parameters of the original PID Stanley controller to improve tracking performance. We adjusted the PID gains and to achieve better tracking results. The dynamic reconfigure GUI provided in the template code allowed us to tune these parameters in real-time.
 
-=== Velocity-based Stanley Gain Adjustment
-To further improve the Stanley method, we adjusted the `stanley_k` parameter based on the robot's velocity. The implementation is shown below:
+The Stanley controller uses the cross-track error (CTE) and heading error to calculate the steering angle. The PID controller adjusts the throttle based on the speed error to maintain the desired speed. The intuitive control law comes as,
+$ delta(t) = theta_e(t) + tan^(-1)(k e_"fa"(t) / v(t)) $
 
-```cpp
-// Adjust Stanley gain based on the current velocity.
-double newStanleyK;
-if (velocity < LOW_SPEED_THRESHOLD) {
-  newStanleyK = STANLEY_K_MAX;
-} else if (velocity > HIGH_SPEED_THRESHOLD) {
-  newStanleyK = STANLEY_K_MIN;
-} else {
-  double ratio = (velocity - LOW_SPEED_THRESHOLD) / (HIGH_SPEED_THRESHOLD - LOW_SPEED_THRESHOLD);
-  newStanleyK = STANLEY_K_MAX - ratio * (STANLEY_K_MAX - STANLEY_K_MIN);
-}
-```
+Where, 
 
-This adjustment allows the robot to have a higher Stanley gain at lower speeds for better tracking accuracy and a lower gain at higher speeds for smoother steering.
+$theta_e    = "Heading error (rad)"$
+
+$e_"fa"       = "Lateral offset (m)"$
+
+$delta      = "Steering angle (rad)"$
+
+$k          = "Stanley Gain"$
+
+$c_x, c_y   = "Nearest point in path"$ 
+
+$v          = "Velocity of vehicle (m/s)"$
+
+=== Improvment of Velocity-based Stanley Gain Adjustment
+To further improve the given Stanley method, we adjusted the `stanley_k` parameter based on the robot's current velocity. This adjustment allows the robot to have a higher Stanley gain at lower speeds for better tracking accuracy and a lower gain at higher speeds for smoother steering.
 
 === PID + Pure Pursuit Controller
 
-Finally, we implemented a combination of PID and Pure Pursuit methods. The Pure Pursuit method calculates the goal pose by finding the closest path point to the robot that is a certain distance ahead (purePursuit_DistanceAhead). This goal pose is then used by the PID controller to generate the appropriate throttle and steering commands.
+The final control strategy implemented in this work is a combination of the PID and Pure Pursuit methods, inspired by @coulter1992implementation. The Pure Pursuit algorithm calculates the goal pose by identifying the closest path point to the robot that is a fixed distance ahead, defined as the `purePursuit_DistanceAhead` parameter. This concept is illustrated in detail in @fig:pure_pursuit @althoff_pure_pursuit. The computed goal pose serves as the target for the PID controller, which generates the appropriate throttle and steering commands to guide the robot towards the desired path.
+
+#figure(
+  caption: [Pure Pursuit Method],
+  image("assets/purepursuit_math.png")
+)<fig:pure_pursuit>
 
 == Results and Discussion
 
-
 #figure(
-  caption: [Path Tracking Visualization],
+  caption: [Path Tracking Visualization (Original PID Stanley vs. Improved PID Stanley vs. PID + Pure Pursuit)],
   grid(
-    columns: 2,
-    image("../assets/stanley_viz.png"),
-    image("../assets/purepursuit_viz.png")
+    columns: 3,
+    image("assets/pid_stanley_original/traj.png"),
+    image("assets/pid_stanley_improved/traj.png"),
+    image("assets/pid_purepursuit/traj.png")
   )
 )<fig:bonus_viz>
 
 @fig:bonus_viz shows the path tracking results of the original PID Stanley controller and the PID + Pure Pursuit controller. The visualization demonstrates the improved tracking performance of the PID + Pure Pursuit method, which follows the figure-8 trajectory more accurately.
 
 #figure(
-  caption: [Comparison of Path Tracking Methods],
+  caption: [Errors of Path Tracking Methods (Original PID Stanley vs. Improved PID Stanley vs. PID + Pure Pursuit)],
+  grid(
+    columns: 2,
+    image("assets/pid_stanley_original/errors.png"),
+    image("assets/pid_stanley_improved/errors.png"),
+    image("assets/pid_purepursuit/errors.png"),
+  )
+)<fig:bonus_errors>
+
+#figure(
+  caption: [Comparison of Path Tracking Methods (RMS Errors)],
   kind: table,
   tablex(
     columns: 4,
@@ -289,13 +323,13 @@ Finally, we implemented a combination of PID and Pure Pursuit methods. The Pure 
     [*RMS \ Heading \ Error (deg)*],
     [*RMS \ Speed \ Error (m/s)*],
 
-    [*Original \ PID Stanley*], [], [], [],
-    [*Velocity-based Stanley*], [], [], [],
-    [*PID \ Purepursuit*], [], [], []
+    [*Original \ PID Stanley*], [0.697], [23.23], [0.240],
+    [*Improved \ PID Stanley*], [*0.535*], [*5.924*], [*0.310*],
+    [*PID \ Pure Pursuit*], [0.607], [6.385], [0.380]
   )
 )<tab:bonus_rms>
 
-@tab:bonus_rms summarizes the root mean square (RMS) errors for position, heading, and speed obtained by the original PID Stanley controller, the velocity-based Stanley controller, and the PID + Pure Pursuit controller. The results show that the PID + Pure Pursuit method achieved the best tracking accuracy, with significantly reduced RMS errors compared to the original implementation.
+@tab:bonus_rms summarizes the root mean square (RMS) errors for position, heading, and speed obtained by the original PID Stanley controller, the improved Stanley controller, and the PID + Pure Pursuit controller. The results show that the improved PID Stanley method achieved the best tracking accuracy, with significantly reduced RMS errors compared to the original implementation.
 
 == Conclusion
 
