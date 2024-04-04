@@ -1,10 +1,10 @@
 <!-- markdownlint-disable MD024 -->
 
-# My ME5413 Planning Project
+# ME5413 Planning Project Group20
 
 > Authors: [Cao Chenyu](https://github.com/ruziniuuuuu), [Zhao Xu](https://github.com/AeroEmbedAutoTechJohn), [Li Zhangjin](https://github.com/Lizhangjin)
 
-This is my forked version of the [ME5413_PLANNING_Project](https://github.com/ruziniuuuuu/ME5413_Planning_Project_Group20.git).
+This is our forked version (Group 20) of the [ME5413_PLANNING_Project](https://github.com/ruziniuuuuu/ME5413_Planning_Project_Group20.git).
 
 ## Introduction
 
