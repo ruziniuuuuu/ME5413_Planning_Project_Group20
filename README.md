@@ -96,6 +96,7 @@ ME5413_Planning_Project_Group20
 - [x] Implement the A* algorithm
 - [x] Degenrate the A* algorithm to Dijkstra's algorithm
 - [x] Degenrate the A* algorithm to Greedy Best First Search
+- [x] Try all the start and goal positions
 - [x] Compare the performance of the three algorithms in terms of path length, nodes visited, and computation time
 - [x] Implement the A* algorithm with a different heuristic (Manhattan distance)
 
